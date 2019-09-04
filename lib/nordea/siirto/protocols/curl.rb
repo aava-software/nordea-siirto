@@ -6,40 +6,42 @@ module Nordea
       # Provided as an alternative protocol for net/http, as some ruby
       # implementations fail to complete SSL Handshake with Nordea servers.
       # At least JRuby 1.9.17 falls in this category.
-      module Curl
-        module_function
+      class Curl < Base
+        private
 
-        # Public interface of the protocol implementation
+        # Parses generic Siirto request and returns curl command string
         # @param [Nordea::Siirto::Request]
-        # @return [Nordea::Siirto::Response]
-        # rubocop:disable MethodLength,AbcSize,LineLength
-        def send_request(siirto_request)
-          Nordea::Siirto.log("Sending request to: #{siirto_request.uri}")
-
-          request = format_request(siirto_request)
-          curl_response = IO.popen(request)
-          response = pack_response(curl_response)
-
-          # Log response
-          if response.body['access_token'] # do not log token
-            Nordea::Siirto.log("Server responds: #{response.message} #{response.code}")
-          else
-            Nordea::Siirto.log("Server responds: #{response.message} #{response.code} #{response.body}")
+        # @return [String]
+        def create_request(siirto_request)
+          # i - show information, not just response body
+          # s - hide statusbar, error information
+          request = "curl -X #{siirto_request.method} -is"
+          siirto_request.headers.each do |header, value|
+            request << " --header '#{header}: #{value}'"
           end
-
-          response
-        rescue StandardError => e
-          Nordea::Siirto.log("Fails: #{e.message}")
-          raise
+          if (body = siirto_request.body).present?
+            request << " --data '#{body}'"
+          end
+          request << " #{siirto_request.uri}"
+          request
         end
-        # rubocop:enable MethodLength,AbcSize,LineLength
 
-        # Private convenience method
-        # Parses curl response string and returns a generic siirto response
+       # Makes the actual request
+       # @param [Nordea::Siirto::Request]
+       # @return [Net::HTTPRequest]
+       def send_request(siirto_request)
+          request = create_request(siirto_request)
+          IO.popen(request)
+        end
+
+        # Parses curl response string and returns a generic Siirto response
         # @params [String]
         # @return [Nordea::Siirto::Response]
-        def pack_response(curl_response)
+        def parse_response(curl_response)
           lines = curl_response.readlines
+          # Absence of network connection
+          raise IOError, 'Curl response empty' if lines.blank?
+
           code = lines.first.split(' ').last
           body = JSON.parse(lines.last)
 
@@ -52,24 +54,6 @@ module Nordea
           response.message = ''
           response.body = body
           response
-        end
-
-        # Private convenience method
-        # Parses generic siirto request and returns curl command string
-        # @param [Nordea::Siirto::Request]
-        # @return [String]
-        def format_request(siirto_request)
-          # i - show information, not just response body
-          # s - hide statusbar, error information
-          request = "curl -X #{siirto_request.method} -is"
-          siirto_request.headers.each do |header, value|
-            request << " --header '#{header}: #{value}'"
-          end
-          if (body = siirto_request.body).present?
-            request << " --data '#{body}'"
-          end
-          request << " #{siirto_request.uri}"
-          request
         end
       end
     end
