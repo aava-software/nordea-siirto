@@ -10,6 +10,6 @@ Gem::Specification.new do |spec|
   DESCRIPTION
   spec.authors = ['Matilda Smeds']
   spec.email = 'foss@aavasoftware.com'
-  spec.files = ['lib/nordea/siirto.rb'] + Dir['lib/nordea/siirto/*.rb']
+  spec.files = ['lib/nordea/siirto.rb'] + Dir['lib/nordea/siirto/**/*.rb']
   spec.license = 'MIT'
 end

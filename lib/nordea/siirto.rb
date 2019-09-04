@@ -13,6 +13,7 @@ require 'nordea/siirto/lookup.rb'
 require 'nordea/siirto/pay.rb'
 
 # Implemented protocols
+require 'nordea/siirto/protocols/base.rb'
 require 'nordea/siirto/protocols/net_http.rb'
 require 'nordea/siirto/protocols/curl.rb'
 
