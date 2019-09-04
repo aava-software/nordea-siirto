@@ -55,7 +55,7 @@ module Nordea
           @redis ||= REDIS
 
           # Client can inject another Protocol
-          @protocol ||= Protocols::NetHttp
+          @protocol ||= Protocols::NetHttp.new
 
           # Initialization complete
           log('Initialized!')
@@ -102,7 +102,7 @@ module Nordea
           parameter hash with the following keys: :server (either :prod or
           :test), :username, :api_token.',
         invalid_logger: 'Logger must respond to :info method.',
-        invalid_protocol: 'Protocol must respond to :send_request method'
+        invalid_protocol: 'Protocol must respond to :send! method'
       }.freeze
 
       # Checks that module has not been previously initialized, and
@@ -115,7 +115,7 @@ module Nordea
         if opts[:logger] && !opts[:logger].respond_to?(:info)
           raise InitializationError, ERROR[:invalid_logger]
         end
-        if opts[:protocol] && !opts[:protocol].respond_to?(:send_request)
+        if opts[:protocol] && !opts[:protocol].respond_to?(:send!)
           raise InitializationError, ERROR[:invalid_protocol]
         end
       end

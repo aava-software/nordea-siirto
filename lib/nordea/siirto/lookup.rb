@@ -7,7 +7,7 @@ module Nordea
 
       # @return [Hash]
       def lookup
-        response = Nordea::Siirto.protocol.send_request(request)
+        response = Nordea::Siirto.protocol.send!(request)
         response.body
       end
 
@@ -30,7 +30,7 @@ module Nordea
 
       # @return [Nordea::Siirto::Response]
       def response
-        Nordea::Siirto.protocol.send_request(request)
+        Nordea::Siirto.protocol.send!(request)
       end
     end
   end
