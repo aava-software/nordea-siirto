@@ -11,7 +11,6 @@ Nordea::Siirto::Lookup | Fetches new LookupId for each payment request, when `No
 Nordea::Siirto::Pay | Sends Iban payment. Client should call `Nordea::Siirto.pay` directly | POST | /payment/pay
 
 `Nordea::Siirto` defines the gem's intended public interface. 
-Client should call `Nordea::Siirto.setup` and `Nordea::Siirto.pay` as described below. 
 
 ## Initialization
 
