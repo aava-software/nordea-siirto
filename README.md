@@ -1,7 +1,6 @@
 # Nordea::Siirto
 
-Nordea::Siirto implements payment requests to specific Finnish banks, as specified in
-[Siirto Specification](https://www.nordea.fi/yritysasiakkaat/palvelumme/tilit-maksut/siirto-yritysasiakkaille.html#tab=Palvelukuvaukset).
+This gem is a client for Nordea Banks [Siirto API](https://www.nordea.fi/yritysasiakkaat/palvelumme/tilit-maksut/siirto-yritysasiakkaille.html#tab=Palvelukuvaukset), which enables bank payments to specific Finnish banks.
 
 Gem currently implements the following requests:
 
@@ -9,7 +8,9 @@ Request | Description | Method | Endpoint
 ---|---|---|---
 Nordea::Siirto::AccessToken | Fetches access token from remote and stores it, if previous one has expired. | POST | /auth
 Nordea::Siirto::Lookup | Fetches new LookupId for each payment request, when Nordea::Siirto.pay is called | GET  | /lookup/uuid
-Nordea::Siirto::Pay | Sends Iban payment. Client should call `Nordea::Siirto.pay` directly. | POST | /payment/pay
+Nordea::Siirto::Pay | Sends Iban payment. Client should call `Nordea::Siirto.pay` directly | POST | /payment/pay
+
+`Nordea::Siirto` defines the gem's intended public interface. In normal use the client calls `Nordea::Siirto.setup(opts)` and `Nordea::Siirto.pay(payload)` as described below. 
 
 ## Initialization
 
@@ -57,7 +58,7 @@ Param | Description | Default value
   Nordea::Siirto.pay(payload) # => Nordea::Siirto::Response object
 ```
 
-Client must check code, message and body from the Response object.
+Client must check `code` (http status), `message` and `body` values from the `Response` object.
 
 Other allowed parameters are documented in Siirto documentation.
 Parameters must be given in snake_case format. For instance parameter `beneficiaryMinimumAge` becomes `:beneficiary_minimun_age`.
