@@ -7,11 +7,11 @@ Gem currently implements the following requests:
 Module | Description | Method | Endpoint
 ---|---|---|---
 Nordea::Siirto::AccessToken | Fetches access token from remote and stores it, if previous one has expired. | POST | /auth
-Nordea::Siirto::Lookup | Fetches new LookupId for each payment request, when Nordea::Siirto.pay is called | GET  | /lookup/uuid
+Nordea::Siirto::Lookup | Fetches new LookupId for each payment request, when `Nordea::Siirto.pay` is called | GET  | /lookup/uuid
 Nordea::Siirto::Pay | Sends Iban payment. Client should call `Nordea::Siirto.pay` directly | POST | /payment/pay
 
 `Nordea::Siirto` defines the gem's intended public interface. 
-Client should call `Nordea::Siirto.setup()` and `Nordea::Siirto.pay()` as described below. 
+Client should call `Nordea::Siirto.setup` and `Nordea::Siirto.pay` as described below. 
 
 ## Initialization
 
