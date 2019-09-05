@@ -1,6 +1,6 @@
 # Nordea::Siirto
 
-This gem is a client for Nordea Banks [Siirto API](https://www.nordea.fi/yritysasiakkaat/palvelumme/tilit-maksut/siirto-yritysasiakkaille.html#tab=Palvelukuvaukset), which enables bank payments to specific Finnish banks.
+Client for Nordea Bank's [Siirto API](https://www.nordea.fi/yritysasiakkaat/palvelumme/tilit-maksut/siirto-yritysasiakkaille.html#tab=Palvelukuvaukset), which enables payments to specific Finnish banks.
 
 Gem currently implements the following requests:
 
