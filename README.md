@@ -11,7 +11,7 @@ Nordea::Siirto::Lookup | Fetches new LookupId for each payment request, when Nor
 Nordea::Siirto::Pay | Sends Iban payment. Client should call `Nordea::Siirto.pay` directly | POST | /payment/pay
 
 `Nordea::Siirto` defines the gem's intended public interface. 
-Call `Nordea::Siirto.setup()` and `Nordea::Siirto.pay()` as described below. 
+Client should call `Nordea::Siirto.setup()` and `Nordea::Siirto.pay()` as described below. 
 
 ## Initialization
 
@@ -59,7 +59,7 @@ Param | Description | Default value
   Nordea::Siirto.pay(payload) # => Nordea::Siirto::Response object
 ```
 
-Check `code` (http status), `message` and `body` values from the `Response` object.
+Client should check `code` (http status), `message` and `body` values from the `Response` object.
 
 Other allowed parameters are documented in Siirto documentation.
 Parameters must be given in snake_case format. For instance parameter `beneficiaryMinimumAge` becomes `:beneficiary_minimun_age`.
