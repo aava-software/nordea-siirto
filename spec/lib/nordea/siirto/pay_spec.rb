@@ -17,7 +17,6 @@ RSpec.describe 'Nordea::Siirto::Pay' do
   it 'creates request correctly' do
     allow(Nordea::Siirto::AccessToken).to receive(:access_token).and_return('Star Trek')
     allow(Nordea::Siirto::Lookup).to receive(:lookup).and_return({ 'lookupId' => 'Babylon 5' })
-    allow(Nordea::Siirto::Pay).to receive(:response)
 
     request = Nordea::Siirto::Pay.request(params)
 
@@ -40,7 +39,9 @@ RSpec.describe 'Nordea::Siirto::Pay' do
     expect { Nordea::Siirto::Pay.pay(invalid_params) }.to raise_error Nordea::Siirto::Pay::InvalidIBAN
 
     # With valid iban
-    allow(Nordea::Siirto::Pay).to receive(:response)
+    allow(Nordea::Siirto::AccessToken).to receive(:access_token).and_return('some-token')
+    allow(Nordea::Siirto::Lookup).to receive(:lookup).and_return({ 'lookupId' => 'some-lookup' })
+    allow(Nordea::Siirto.protocol).to receive(:send!)
     expect { Nordea::Siirto::Pay.pay(params) }.not_to raise_error
   end
 
