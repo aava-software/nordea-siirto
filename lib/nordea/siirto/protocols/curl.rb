@@ -3,9 +3,14 @@ module Nordea
     # NOTE: NOT COVERED BY TEST SET
     module Protocols
       # Implements communication with Nordea server using command line cURL.
-      # Provided as an alternative protocol for net/http, as some ruby
+      # Provided as an alternative protocol for net/http, as some Ruby
       # implementations fail to complete SSL Handshake with Nordea servers.
       # At least JRuby 1.9.17 falls in this category.
+      #
+      # WARNING: We cannot guarantee what Nordea::Siirto::Response#code
+      # will contain. With legacy JRuby, a better way (next to upgrading)
+      # would be to wrap sufficiently modern and robust Java HTTP library.
+      # That way server responses would be more reliable.
       class Curl < Base
         private
 
